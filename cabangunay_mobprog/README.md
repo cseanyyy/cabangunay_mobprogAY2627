@@ -1,3 +1,7 @@
+# cabangunay_mobprog
+
+A new Flutter project.
+Lab Activity 0: discussion
 # Lab Activity 0: Discussion
 
 ## Lab Activity 0A: Flutter Installation
