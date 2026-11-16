@@ -1,3 +1,7 @@
+# cabangunay_mobprog
+
+A new Flutter project.
+Lab Activity 0: discussion
 # Lab Activity 0: Discussion
 
 ## Lab Activity 0A: Flutter Installation
@@ -5,3 +9,8 @@ Setting up the Flutter development environment required configuring path variabl
 
 ## Lab Activity 0B: Flutter Project Instantiation
 Instantiating the initial Flutter application (`cabangunay_mobprog`) demonstrated the framework's cross-platform capabilities. While targeting local desktop builds requires specific platform C++ toolchains, targeting Chrome (web) provided a seamless web execution environment without extra native overhead. Configuring project templates and managing device targets in VS Code reinforced best practices for cross-platform project setups.
+
+# Lab Activity 1: File Structuring | Design Pattern
+
+### Lab Activity 1: Discussion
+Integrating images dynamically into `newsfeed_card.dart` is achieved by utilizing a boolean flag parameter (`hasImage`). When `hasImage` is set to true, a conditional check evaluates the state and renders a placeholder widget for the media area. If false, it defaults to a minimal vertical spacing box, keeping the component fully reusable and adaptable for both text-only posts and media posts.
