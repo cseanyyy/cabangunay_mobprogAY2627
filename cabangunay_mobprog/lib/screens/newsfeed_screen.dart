@@ -18,7 +18,7 @@ class NewsFeedScreen extends StatelessWidget {
         NewsFeedCard(
           userName: 'Kevin Durant',
           postContent: 'IM ME, I DO ME, AND I CHILL',
-          numOfLikes: 200,
+          numOfLikes: 666,
           hasImage: true,
           avatarPath: 'assets/images/kd.jpg',
           postImagePath: 'assets/images/kd2.jpg',
