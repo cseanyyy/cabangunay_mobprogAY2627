@@ -14,3 +14,8 @@ Instantiating the initial Flutter application (`cabangunay_mobprog`) demonstrate
 
 ### Lab Activity 1: Discussion
 Integrating images dynamically into `newsfeed_card.dart` is achieved by utilizing a boolean flag parameter (`hasImage`). When `hasImage` is set to true, a conditional check evaluates the state and renders a placeholder widget for the media area. If false, it defaults to a minimal vertical spacing box, keeping the component fully reusable and adaptable for both text-only posts and media posts.
+
+# Lab Activity 2: List Widgets | Enhancements
+
+### Lab Activity 2: Discussion
+Going through Lab Activity 2 started with getting the environment and dependencies sorted before building out the list views, and along the way I ran into a few real roadblocks—like a non-nullable `fontFamily` error in `CustomText`, running `flutter run` outside the `cabangunay_mobprog` project folder, and player photos getting cropped so their heads were cut off on the feed. Once those were fixed and I switched the feed and notifications over to `ListView.builder` and `ListView.separated`, putting together the 10 NBA player posts and 20 matching notifications felt much cleaner and easier to manage. Customizing the app as *BOJIRO* with my chosen color palette in `constants.dart`, dynamic `AppBar` titles, a 3-tab bottom bar (`Home`, `Notifications`, `Profile`), and top-aligned image framing pulled the whole activity together into a finished build I felt good about pushing.

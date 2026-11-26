@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../constants.dart';
+import 'custom_text.dart';
 
-class NewsFeedCard extends StatelessWidget {
+class NewsFeedCard extends StatefulWidget {
   final String userName;
   final String postContent;
   final int numOfLikes;
@@ -13,7 +16,7 @@ class NewsFeedCard extends StatelessWidget {
     super.key,
     required this.userName,
     required this.postContent,
-    required this.numOfLikes,
+    this.numOfLikes = 0,
     required this.date,
     this.hasImage = false,
     this.avatarPath,
@@ -21,158 +24,151 @@ class NewsFeedCard extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      elevation: 1,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Header: Avatar, user name, and post date
-            Row(
-              children: [
-                CircleAvatar(
-                  radius: 20,
-                  backgroundImage:
-                      avatarPath != null ? AssetImage(avatarPath!) : null,
-                  child: avatarPath == null ? const Icon(Icons.person) : null,
-                ),
-                const SizedBox(width: 10),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      userName,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15,
-                      ),
-                    ),
-                    Text(
-                      date,
-                      style: TextStyle(
-                        color: Colors.grey.shade600,
-                        fontSize: 12,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
-
-            // Post text content
-            Text(
-              postContent,
-              style: const TextStyle(fontSize: 14),
-            ),
-
-            // Dynamic image area when hasImage is true
-            if (hasImage) ...[
-              const SizedBox(height: 10),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: postImagePath != null
-                    ? Image.asset(
-                        postImagePath!,
-                        height: 220,
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                      )
-                    : Container(
-                        height: 200,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: Colors.grey.shade200,
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(color: Colors.grey.shade300),
-                        ),
-                        child: const Placeholder(
-                          color: Colors.grey,
-                          strokeWidth: 1.5,
-                        ),
-                      ),
-              ),
-            ],
-
-            const SizedBox(height: 10),
-            const Divider(height: 1),
-            const SizedBox(height: 6),
-
-            // Likes count
-            Text(
-              '$numOfLikes likes',
-              style: TextStyle(
-                color: Colors.grey.shade700,
-                fontSize: 13,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            const SizedBox(height: 6),
-
-            // Widget-based Like and Comment buttons
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _FeedActionButton(
-                  assetPath: 'assets/images/like.png',
-                  label: 'Like',
-                  onTap: () {},
-                ),
-                _FeedActionButton(
-                  assetPath: 'assets/images/comment.png',
-                  label: 'Comment',
-                  onTap: () {},
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+  State<NewsFeedCard> createState() => _NewsFeedCardState();
 }
 
-class _FeedActionButton extends StatelessWidget {
-  final String assetPath;
-  final String label;
-  final VoidCallback onTap;
+class _NewsFeedCardState extends State<NewsFeedCard> {
+  late int _likes;
+  bool _isLiked = false;
 
-  const _FeedActionButton({
-    required this.assetPath,
-    required this.label,
-    required this.onTap,
-  });
+  @override
+  void initState() {
+    super.initState();
+    _likes = widget.numOfLikes;
+  }
+
+  void _toggleLike() {
+    setState(() {
+      if (_isLiked) {
+        _likes--;
+        _isLiked = false;
+      } else {
+        _likes++;
+        _isLiked = true;
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(6),
+    final String? imageToShow =
+        widget.hasImage ? (widget.postImagePath ?? widget.avatarPath) : null;
+
+    return Card(
+      margin: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
+      elevation: 1.5,
+      color: Colors.white,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
+        padding: EdgeInsets.all(12.w),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.asset(
-              assetPath,
-              width: 18,
-              height: 18,
-              fit: BoxFit.contain,
+            Row(
+              children: [
+                CircleAvatar(
+                  radius: 20.r,
+                  backgroundColor: FB_SECONDARY,
+                  backgroundImage: widget.avatarPath != null
+                      ? AssetImage(widget.avatarPath!)
+                      : null,
+                  child: widget.avatarPath == null
+                      ? const Icon(Icons.person, color: FB_TEXT_COLOR_WHITE)
+                      : null,
+                ),
+                SizedBox(width: 10.w),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CustomText(
+                        text: widget.userName,
+                        fontSize: 15.sp,
+                        fontWeight: FontWeight.bold,
+                        color: FB_DARK_PRIMARY,
+                        fontFamily: 'sans-serif',
+                      ),
+                      CustomText(
+                        text: widget.date,
+                        fontSize: 12.sp,
+                        color: Colors.grey.shade600,
+                        fontFamily: 'sans-serif',
+                      ),
+                    ],
+                  ),
+                ),
+                Icon(Icons.more_horiz, color: Colors.grey.shade700),
+              ],
             ),
-            const SizedBox(width: 6),
-            Text(
-              label,
-              style: TextStyle(
-                color: Colors.grey.shade800,
-                fontWeight: FontWeight.w600,
-                fontSize: 13,
+            SizedBox(height: 10.h),
+            CustomText(
+              text: widget.postContent,
+              fontSize: 14.sp,
+              color: Colors.black87,
+              fontFamily: 'sans-serif',
+            ),
+            if (imageToShow != null) ...[
+              SizedBox(height: 10.h),
+              Container(
+                width: double.infinity,
+                constraints: BoxConstraints(
+                  maxHeight: 280.h,
+                ),
+                color: FB_DARK_PRIMARY,
+                child: Image.asset(
+                  imageToShow,
+                  fit: BoxFit.contain,
+                  alignment: Alignment.topCenter,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Container(
+                      height: 200.h,
+                      color: Colors.grey.shade200,
+                      alignment: Alignment.center,
+                      child: const Icon(Icons.broken_image, size: 40),
+                    );
+                  },
+                ),
               ),
+            ],
+            SizedBox(height: 10.h),
+            CustomText(
+              text: '$_likes likes',
+              fontSize: 12.sp,
+              color: Colors.grey.shade700,
+              fontFamily: 'sans-serif',
+            ),
+            const Divider(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                TextButton.icon(
+                  onPressed: _toggleLike,
+                  icon: Icon(
+                    _isLiked ? Icons.thumb_up : Icons.thumb_up_outlined,
+                    size: 18.sp,
+                    color: _isLiked ? FB_PRIMARY : Colors.grey.shade700,
+                  ),
+                  label: CustomText(
+                    text: 'Like',
+                    fontSize: 13.sp,
+                    color: _isLiked ? FB_PRIMARY : Colors.grey.shade700,
+                    fontFamily: 'sans-serif',
+                  ),
+                ),
+                TextButton.icon(
+                  onPressed: () {},
+                  icon: Icon(
+                    Icons.comment_outlined,
+                    size: 18.sp,
+                    color: Colors.grey.shade700,
+                  ),
+                  label: CustomText(
+                    text: 'Comment',
+                    fontSize: 13.sp,
+                    color: Colors.grey.shade700,
+                    fontFamily: 'sans-serif',
+                  ),
+                ),
+              ],
             ),
           ],
         ),
